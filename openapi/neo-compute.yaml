@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  title: Neo Compute Discovery API
+  version: 0.2.0
+  description: Read-only, provider-sourced GPU discovery. No wallet payments or instance provisioning.
+servers:
+  - url: https://neo-compute.vercel.app
+paths:
+  /api/offers:
+    get:
+      operationId: searchComputeOffers
+      summary: Search available GPU offers
+      parameters:
+        - name: gpu
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [H100, H200, B200, A100, L40S, RTX_4090, RTX_5090, A6000]
+            default: H100
+      responses:
+        '200':
+          description: Connected result or explicit disconnected state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferSearch'
+        '400':
+          description: Unsupported GPU
+        '405':
+          description: Method not allowed
+        '502':
+          description: Upstream provider unavailable
+components:
+  schemas:
+    Offer:
+      type: object
+      required: [id, gpu, provider, gpuCount, hourly, instanceHourly, region, memoryGb, link]
+      properties:
+        id: {type: string}
+        gpu: {type: string}
+        provider: {type: string}
+        gpuCount: {type: number}
+        hourly: {type: number, description: USD per GPU-hour}
+        instanceHourly: {type: number, description: USD per whole instance-hour}
+        region: {type: string}
+        memoryGb: {type: number}
+        link: {type: string, format: uri}
+    OfferSearch:
+      type: object
+      required: [connected, offers]
+      properties:
+        connected: {type: boolean}
+        offers:
+          type: array
+          items: {$ref: '#/components/schemas/Offer'}
+        observedAt: {type: string, format: date-time}
+        provider: {type: string}
+        notice: {type: string}
+        error: {type: string}
