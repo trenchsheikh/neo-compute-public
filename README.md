@@ -6,7 +6,7 @@
 
 > **Status:** Early developer release, read-only. This SDK does **not** book GPUs, launch instances, pay stablecoins, sign wallets, or execute derivatives. It is not yet published on npm.
 
-## Why use it?
+## Choose an integration\n\n| Language or environment | Recommended integration |\n| --- | --- |\n| TypeScript and JavaScript | [Typed client](./src/index.ts) |\n| Python | [Python client](./python/src/neo_compute/client.py) |\n| AI agents and MCP clients | [Local MCP server](./examples/agents/README.md) |\n| Go | [Native HTTP example](./examples/go/main.go) |\n| Rust, Java, C#, PHP, Ruby and others | [OpenAPI 3.1](./openapi/neo-compute.yaml) and standard HTTP |\n\nThe interface is language-neutral. Only discovery is implemented; nothing purchases or provisions compute. See [engineering architecture](./ARCHITECTURE.md).\n\n## Why use it?
 
 Instead of teaching every agent to parse a provider's pricing interface, Neo offers a consistent, typed way to discover available GPU offers with source information and hourly pricing.
 
